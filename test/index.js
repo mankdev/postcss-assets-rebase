@@ -40,7 +40,7 @@ function checkAssetsCopied(folderPath, additionalPaths) {
 	if (additionalPaths) {
 		imgPaths = imgPaths.concat(additionalPaths);
 	}
-	console.log(imgPaths)
+	console.log(imgPaths);
 	return imgPaths.every(function(imgPath) {
 		return fs.existsSync(folderPath + imgPath);
 	});
@@ -105,4 +105,19 @@ test('duplicated images', function(t) {
 	t.ok(checkAssetsCopied('test/result/imported/', ['img_1.jpg', 'img_2.jpg']), 'should copy assets to assetsPath relative to source file');
 	t.end();
 
+});
+
+test('urls with hashes', function(t) {
+	var rebaserOptions = {
+		assetsPath: 'imported',
+		relative: 'true'
+	};
+	var postcssOptions = {
+		from: 'test/fixtures/copy-with-hashes.css',
+		to: 'test/result/copy-with-hashes.css'
+	};
+
+	clearResults('test/result/copy-copy-with-hashes.css');
+	compareFixtures(t, 'should proper process urls with hashes', rebaserOptions, postcssOptions);
+	t.end();
 });

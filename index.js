@@ -99,9 +99,10 @@ function processUrlRebase(dirname, url, to, options) {
 	var relativeAssetsPath = '';
 	var absoluteAssetsPath = '.';
 
-	var filePath = path.resolve(dirname, url);
-	var fileName = path.basename(url);
-
+	var hash = url.split('#')[1];
+	var clearUrl = url.split('#')[0];
+	var filePath = path.resolve(dirname, clearUrl);
+	var fileName = path.basename(clearUrl);
 	var assetContents = getAsset(filePath);
 
 	if (!assetContents) {
@@ -129,6 +130,10 @@ function processUrlRebase(dirname, url, to, options) {
 		}
 	}
 	copyAsset(absoluteAssetsPath, assetContents);
+
+	if (hash) {
+		relativeAssetsPath = [relativeAssetsPath, hash].join('#');
+	}
 
 	return composeUrl(relativeAssetsPath);
 }
